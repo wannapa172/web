@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>หน้าผู้ดูแลระบบ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #FFE066;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #FFD700;
+            padding: 15px 20px;
+            border-bottom: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header img {
+            height: 50px;
+        }
+
+        .header-icons i {
+            font-size: 20px;
+            margin-right: 15px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .header-icons i:hover {
+            color: #555;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background-color: #FFF9D9;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto 20px;
+            border: 2px solid #FFD700;
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            display: block;
+            padding: 12px 15px;
+            font-size: 16px;
+            color: #333;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #FFE066;
+        }
+
+        .sidebar a.active {
+            background-color: #FFD700;
+            color: #fff;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            padding: 40px 30px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            padding: 20px 0;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .card .icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .card.green {
+            background-color: #D4EDDA;
+        }
+
+        .card.red {
+            background-color: #F8D7DA;
+        }
+
+        .card.blue {
+            background-color: #D1ECF1;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .card .count {
+            font-size: 36px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                box-shadow: none;
+            }
+
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <img src="โลโก้เว็บตามรอยรีวิว.png" alt="Logo">
+        <div class="header-icons">
+            <i class="fas fa-home"></i>
+            <i class="fas fa-search"></i>
+            <i class="fas fa-camera"></i>
+            <i class="fas fa-bell"></i>
+            <i class="fas fa-user"></i>
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <img src="e4b22774c130a6b4e45186dd7e8330db.jpg" alt="Admin Profile">
+        <h3>Admin</h3>
+        <a href="#" class="active">หน้าหลัก</a>
+        <a href="#">การจัดการผู้ใช้</a>
+        <a href="#">การจัดการโพสต์</a>
+        <a href="#">การจัดการหมวดหมู่</a>
+        <a href="#">ออกจากระบบ</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>หน้าผู้ดูแลระบบ</h1>
+        <div class="card-container">
+            <div class="card green" onclick="window.location.href='users.html'">
+                <div class="icon"><i class="fas fa-users"></i></div>
+                <h3>จำนวนผู้ใช้งาน</h3>
+                <div class="count">6</div>
+            </div>
+            <div class="card red" onclick="window.location.href='posts.html'">
+                <div class="icon"><i class="fas fa-file-alt"></i></div>
+                <h3>จำนวนโพสต์</h3>
+                <div class="count">6</div>
+            </div>
+            <div class="card blue" onclick="window.location.href='categories1.html'">
+                <div class="icon"><i class="fas fa-th-large"></i></div>
+                <h3>จำนวนหมวดหมู่</h3>
+                <div class="count">10</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

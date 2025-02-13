@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เลือกหมวดหมู่ที่คุณสนใจ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #FFD700;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: #FFD700;
+        }
+
+        .header img {
+            height: 50px;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: #fffbe6;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .container h1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .container p {
+            font-size: 16px;
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        /* Categories */
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .category {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .category:hover {
+            background-color: #FFD700;
+            color: #fff;
+            transform: translateY(-5px);
+        }
+
+        /* Button */
+        .submit-btn {
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #FFD700;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <img src="โลโก้เว็บตามรอยรีวิว.png" alt="Logo">
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <h1>เลือกหมวดหมู่ที่คุณสนใจ</h1>
+        <p>เลือกสิ่งที่คุณสนใจเพื่อปรับแต่งประสบการณ์การใช้งาน TAM ROI Review ให้เหมาะกับคุณ</p>
+        <div class="categories">
+            <div class="category">อาหาร</div>
+            <div class="category">แฟชั่น</div>
+            <div class="category">สุขภาพ</div>
+            <div class="category">การท่องเที่ยว</div>
+            <div class="category">การตกแต่ง</div>
+            <div class="category">สกินแคร์</div>
+            <div class="category">ถ่ายรูป</div>
+            <div class="category">เลี้ยงสัตว์</div>
+            <div class="category">อาชีพ</div>
+            <div class="category">น้ำหนัก</div>
+        </div>
+        <button class="submit-btn">เสร็จสิ้น</button>
+    </div>
+</body>
+</html>

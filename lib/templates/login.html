@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tam Roi Review - เข้าสู่ระบบ</title>
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #FFD700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            max-width: 800px;
+            width: 90%;
+        }
+
+        .logo {
+            flex: 1;
+            text-align: center;
+        }
+
+        .logo img {
+            width: 150px;
+            border-radius: 50%;
+        }
+
+        .login-form {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .login-form h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 10px;
+            background-color: #FFD700;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            background-color: #FFC107;
+        }
+
+        .or {
+            margin: 20px 0;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .social-login button {
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            font-size: 16px;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .social-login button img {
+            width: 25px;
+        }
+
+        .social-login button:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <!-- Logo Section -->
+        <div class="logo">
+            <img src="โลโก้เว็บตามรอยรีวิว.png"  alt="Tam Roi Review Logo">
+        </div>
+
+        <!-- Login Form Section -->
+        <div class="login-form">
+            <h2>เข้าสู่ระบบ</h2>
+            <form>
+                <div class="form-group">
+                    <label for="email">อีเมล</label>
+                    <input type="email" id="email" placeholder="กรอกอีเมล">
+                </div>
+                <div class="form-group">
+                    <label for="password">รหัสผ่าน</label>
+                    <input type="password" id="password" placeholder="กรอกรหัสผ่าน">
+                </div>
+                <button type="button" class="btn-login" onclick="alert('เข้าสู่ระบบสำเร็จ!')">เข้าสู่ระบบ</button>
+            </form>
+            <div class="or">หรือ</div>
+            <div class="social-login">
+                <button onclick="alert('เข้าสู่ระบบด้วย Google')">
+                    <img src="ไอคอนกุเกิ้ล.png" alt="Google"> Google
+                </button>
+                <button onclick="alert('เข้าสู่ระบบด้วย Facebook')">
+                    <img src="ไอคอนเฟสบุ๊ค.png" alt="Facebook"> Facebook
+                </button>
+            </div>
+        </div>
+    </div><script>
+        // ดักเหตุการณ์เมื่อคลิกปุ่ม "เข้าสู่ระบบ"
+        document.querySelector('.btn-login').addEventListener('click', () => {
+            // รับค่าจากฟอร์ม
+            const email = document.getElementById('email').value; // รับค่าอีเมล
+            const password = document.getElementById('password').value; // รับค่ารหัสผ่าน
+    
+            // ส่งข้อมูลไปที่ login.php ด้วย fetch
+            fetch('login.php', {
+                method: 'POST', // วิธีส่งข้อมูล (POST)
+                headers: { 'Content-Type': 'application/json' }, // บอกว่าข้อมูลที่ส่งเป็น JSON
+                body: JSON.stringify({ email, password }) // ส่งข้อมูลอีเมลและรหัสผ่านในรูปแบบ JSON
+            })
+            .then(response => response.json()) // แปลงผลลัพธ์ที่ได้จาก PHP ให้เป็น JSON
+            .then(data => {
+                // ตรวจสอบผลลัพธ์ที่ได้
+                if (data.success) {
+                    alert(data.message); // แสดงข้อความสำเร็จ
+                    localStorage.setItem('user', JSON.stringify(data.user)); // เก็บข้อมูลผู้ใช้ใน localStorage
+                    window.location.href = 'Home.html'; // ไปยังหน้า Home
+                } else {
+                    alert(data.message); // แสดงข้อความผิดพลาด
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error); // แสดงข้อผิดพลาดใน Console (สำหรับนักพัฒนา)
+            });
+        });
+    </script>
+    
+
+</body>
+
+
+</html>

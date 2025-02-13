@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tam Roi Review</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        /* Header */
+        header {
+            background-color: #FFD700;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        header .logo img {
+            height: 80px;
+            width: auto;
+        }
+
+        .header-icons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-icons i {
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        /* Navbar */
+        nav {
+            background-color: #f8e5a6;
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        nav a:hover {
+            color: #FFD700;
+        }
+
+        /* Posts Grid */
+        .posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* แสดงแถวละ 3 โพสต์ */
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .post {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+
+        .post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .profile-pic {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .post-user-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .username {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .post-time {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .post-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .post-content {
+            padding: 15px;
+        }
+
+        .post-content h3 {
+            font-size: 16px;
+            color: #333;
+            margin: 0 0 10px;
+        }
+
+        .post-content p {
+            font-size: 14px;
+            color: #555;
+            height: 60px;
+            overflow: hidden;
+        }
+
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-top: 1px solid #ddd;
+        }
+
+        .post-footer button {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .post-footer button:hover {
+            color: #FFD700;
+        }
+
+        /* Floating Button */
+        .floating-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #FFD700;
+            color: #fff;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .floating-button:hover {
+            background-color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <img src="โลโก้เว็บตามรอยรีวิว.png" alt="Tam Roi Review Logo">
+        </div>
+        <div class="header-icons">
+            <i class="fas fa-home"></i>
+            <i class="fas fa-search"></i>
+            <i class="fas fa-camera"></i>
+            <i class="fas fa-bell"></i>
+            <a href="login.html"><i class="fas fa-user"></i></a>
+        </div>
+    </header>
+
+    <!-- Navbar -->
+    <nav>
+        <a href="#">อาหาร</a>
+        <a href="#">แฟชั่น</a>
+        <a href="#">การท่องเที่ยว</a>
+        <a href="#">สุขภาพ</a>
+        <a href="#">การตกแต่งบ้าน</a>
+        <a href="#">สกินแคร์</a>
+        <a href="#">ถ่ายรูป</a>
+    </nav>
+
+    <!-- Posts Grid -->
+    <section class="posts">
+        {% for post in posts %}
+            <div class="post">
+                <div class="post-header">
+                    <img class="profile-pic" src="https://via.placeholder.com/40" alt="Profile">
+                    <div class="post-user-info">
+                        <span class="username">{{ post.title }}</span>
+                        <span class="post-time">{{ post.category }}</span>
+                    </div>
+                </div>
+                {% if post.image_url %}
+                    <img class="post-image" src="{{ post.image_url }}" alt="Post Image">
+                {% endif %}
+                <div class="post-content">
+                    <h3>{{ post.category }}</h3>
+                    <p>{{ post.content }}</p>
+                </div>
+                <div class="post-footer">
+                    <button onclick="toggleLike(this)"><i class="fas fa-heart"></i> ถูกใจ</button>
+                    <button onclick="savePost()"><i class="fas fa-bookmark"></i> บันทึก</button>
+                </div>
+            </div>
+        {% endfor %}
+    </section>
+
+    <!-- Floating Button -->
+    <div class="floating-button" onclick="location.href='{{ url_for('post_page') }}'">+</div>
+
+</body>
+</html>

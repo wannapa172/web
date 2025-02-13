@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .post-image {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .back-button {
+            display: inline-block;
+            margin-bottom: 10px;
+            background: #FFD700;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .back-button:hover {
+            background: #FFC107;
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+        .category {
+            color: #888;
+            font-size: 14px;
+        }
+        .content {
+            font-size: 16px;
+            color: #555;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- ปุ่มกลับไปหน้าหลัก -->
+        <a href="{{ url_for('home') }}" class="back-button"><i class="fas fa-arrow-left"></i> กลับหน้าหลัก</a>
+
+        <!-- รายละเอียดโพสต์ -->
+        <h1>{{ post.title }}</h1>
+        <p class="category">{{ post.category }}</p>
+        {% if post.image_url %}
+            <img src="{{ post.image_url }}" class="post-image" alt="รูปภาพโพสต์">
+        {% endif %}
+        <p class="content">{{ post.content }}</p>
+    </div>
+
+</body>
+</html>
