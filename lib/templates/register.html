@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tam Roi Review - เข้าสู่ระบบ</title>
+    <title>Tam Roi Review - สมัครสมาชิก</title>
     <style>
         body {
             margin: 0;
@@ -14,7 +14,7 @@
             align-items: center;
             height: 100vh;
         }
-        .login-container {
+        .register-container {
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -33,12 +33,12 @@
             width: 150px;
             border-radius: 50%;
         }
-        .login-form {
+        .register-form {
             flex: 1;
             text-align: center;
             padding: 20px;
         }
-        .login-form h2 {
+        .register-form h2 {
             font-size: 24px;
             color: #333;
             margin-bottom: 20px;
@@ -60,30 +60,19 @@
             border-radius: 10px;
             font-size: 16px;
         }
-        .btn-login, .btn-register {
+        .btn-register {
             width: 100%;
             padding: 10px;
+            background-color: #FFD700;
             border: none;
+            color: #fff;
             font-size: 16px;
             border-radius: 10px;
             cursor: pointer;
             margin-top: 10px;
         }
-        .btn-login {
-            background-color: #FFD700;
-            color: #fff;
-        }
-        .btn-login:hover {
-            background-color: #FFC107;
-        }
-        .btn-register {
-            background-color: #fff;
-            color: #FFD700;
-            border: 2px solid #FFD700;
-        }
         .btn-register:hover {
-            background-color: #FFD700;
-            color: #fff;
+            background-color: #FFC107;
         }
         .loading {
             display: none;
@@ -94,13 +83,17 @@
     </style>
 </head>
 <body>
-    <div class="login-container">
+    <div class="register-container">
         <div class="logo">
             <img src="{{ url_for('static', filename='images/โลโก้เว็บตามรอยรีวิว.png') }}" alt="Tam Roi Review Logo">
         </div>
-        <div class="login-form">
-            <h2>เข้าสู่ระบบ</h2>
+        <div class="register-form">
+            <h2>สมัครสมาชิก</h2>
             <form>
+                <div class="form-group">
+                    <label for="username">ชื่อผู้ใช้</label>
+                    <input type="text" id="username" placeholder="กรอกชื่อผู้ใช้">
+                </div>
                 <div class="form-group">
                     <label for="email">อีเมล</label>
                     <input type="email" id="email" placeholder="กรอกอีเมล">
@@ -109,49 +102,46 @@
                     <label for="password">รหัสผ่าน</label>
                     <input type="password" id="password" placeholder="กรอกรหัสผ่าน">
                 </div>
-                <button type="button" class="btn-login">เข้าสู่ระบบ</button>
-                <p class="loading">กำลังเข้าสู่ระบบ...</p>
-                <button type="button" class="btn-register" onclick="window.location.href='{{ url_for('register_page') }}'">สมัครสมาชิก</button>
+                <button type="button" class="btn-register">สมัครสมาชิก</button>
+                <p class="loading">กำลังสมัครสมาชิก...</p>
             </form>
         </div>
     </div>
-    
+
     <script>
-        document.querySelector('.btn-login').addEventListener('click', async () => {
+        document.querySelector('.btn-register').addEventListener('click', async () => {
+            const username = document.getElementById('username').value.trim();
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
             const loadingText = document.querySelector('.loading');
 
-            if (!email || !password) {
-                alert("⚠️ กรุณากรอกอีเมลและรหัสผ่านให้ครบถ้วน");
+            if (!username || !email || !password) {
+                alert("กรุณากรอกข้อมูลให้ครบถ้วน");
                 return;
             }
 
             loadingText.style.display = 'block';
 
             try {
-                const response = await fetch('http://127.0.0.1:5000/login', {
+                const response = await fetch('http://127.0.0.1:5000/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
+                    body: JSON.stringify({ username, email, password })
                 });
 
                 const data = await response.json();
                 loadingText.style.display = 'none';
 
                 if (data.error) {
-                    alert(`❌ ${data.error}`);
+                    alert(data.error);
                 } else {
-                    alert(`✅ ${data.message}`);
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('user', JSON.stringify(data.user));
-
-                    window.location.href = '/';
+                    alert(data.message);
+                    window.location.href = 'login_page'; // ส่งไปหน้า Login
                 }
             } catch (error) {
                 loadingText.style.display = 'none';
                 console.error('Error:', error);
-                alert("❌ เกิดข้อผิดพลาดในการเชื่อมต่อกับเซิร์ฟเวอร์");
+                alert("เกิดข้อผิดพลาดในการเชื่อมต่อกับเซิร์ฟเวอร์");
             }
         });
     </script>

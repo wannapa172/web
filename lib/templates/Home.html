@@ -53,6 +53,7 @@
             color: #333;
             font-weight: bold;
             font-size: 16px;
+            cursor: pointer;
         }
 
         nav a:hover {
@@ -62,7 +63,7 @@
         /* Posts Grid */
         .posts {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* แสดงแถวละ 3 โพสต์ */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
             padding: 20px;
             max-width: 1200px;
@@ -191,49 +192,153 @@
             <i class="fas fa-search"></i>
             <i class="fas fa-camera"></i>
             <i class="fas fa-bell"></i>
-            <a href="login.html"><i class="fas fa-user"></i></a>
+            <!-- User Profile -->
+            <div class="profile-dropdown">
+                <div id="user-icon" onclick="toggleProfileMenu()">
+                    <i class="fas fa-user"></i>
+            <i class="fas fa-bars menu-icon"></i>
         </div>
     </header>
-
-    <!-- Navbar -->
+    <!-- ข้อความ "สำหรับคุณ" -->
+<div class="top-bar">
+    <span class="tab-active">ติดตาม</span>
+    <span>สำหรับคุณ</span>
+</div>
     <nav>
-        <a href="#">อาหาร</a>
-        <a href="#">แฟชั่น</a>
-        <a href="#">การท่องเที่ยว</a>
-        <a href="#">สุขภาพ</a>
-        <a href="#">การตกแต่งบ้าน</a>
-        <a href="#">สกินแคร์</a>
-        <a href="#">ถ่ายรูป</a>
+        <a onclick="fetchPostsByCategory('อาหาร')">อาหาร</a>
+        <a onclick="fetchPostsByCategory('แฟชั่น')">แฟชั่น</a>
+        <a onclick="fetchPostsByCategory('การท่องเที่ยว')">การท่องเที่ยว</a>
+        <a onclick="fetchPostsByCategory('สุขภาพ')">สุขภาพ</a>
+        <a onclick="fetchPostsByCategory('การตกแต่งบ้าน')">การตกแต่งบ้าน</a>
+        <a onclick="fetchPostsByCategory('สกินแคร์')">สกินแคร์</a>
+        <a onclick="fetchPostsByCategory('ถ่ายรูป')">ถ่ายรูป</a>
+        <a onclick="fetchPostsByCategory('สัตวเลี้ยง')">สัตว์เลี้ยง</a>
+        <a onclick="fetchPostsByCategory('อาชีพ')">อาชีพ</a>
+        <a onclick="fetchPostsByCategory('ลดน้ำหนัก')">ลดน้ำหนัก</a>
     </nav>
 
     <!-- Posts Grid -->
-    <section class="posts">
-        {% for post in posts %}
-            <div class="post">
-                <div class="post-header">
-                    <img class="profile-pic" src="https://via.placeholder.com/40" alt="Profile">
-                    <div class="post-user-info">
-                        <span class="username">{{ post.title }}</span>
-                        <span class="post-time">{{ post.category }}</span>
-                    </div>
-                </div>
-                {% if post.image_url %}
-                    <img class="post-image" src="{{ post.image_url }}" alt="Post Image">
-                {% endif %}
-                <div class="post-content">
-                    <h3>{{ post.category }}</h3>
-                    <p>{{ post.content }}</p>
-                </div>
-                <div class="post-footer">
-                    <button onclick="toggleLike(this)"><i class="fas fa-heart"></i> ถูกใจ</button>
-                    <button onclick="savePost()"><i class="fas fa-bookmark"></i> บันทึก</button>
-                </div>
-            </div>
-        {% endfor %}
-    </section>
+    <section class="posts" id="postContainer"></section>
 
     <!-- Floating Button -->
     <div class="floating-button" onclick="location.href='{{ url_for('post_page') }}'">+</div>
+
+    <script>
+        let isLoggedIn = false;
+        let userData = null;
+    
+        // ✅ โหลดข้อมูลโปรไฟล์จาก API `/profile`
+        async function loadUserProfile() {
+            const token = localStorage.getItem('access_token');
+            if (!token) return;
+    
+            try {
+                const response = await fetch('/profile', {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+    
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('profile-name').textContent = data.username;
+                    document.getElementById('profile-email').textContent = data.email;
+                    document.getElementById('user-icon').innerHTML = `
+                        <img src="https://via.placeholder.com/40" alt="Profile" class="profile-icon">
+                    `;
+                    isLoggedIn = true;
+                }
+            } catch (error) {
+                console.error("โหลดข้อมูลโปรไฟล์ผิดพลาด:", error);
+            }
+        }
+    
+        // ✅ ฟังก์ชันแสดง/ซ่อนเมนูโปรไฟล์
+        function toggleProfileMenu() {
+            if (!isLoggedIn) {
+                window.location.href = "/login_page";
+            } else {
+                document.getElementById("profile-menu").classList.toggle("show");
+            }
+        }
+    
+        // ✅ ฟังก์ชันออกจากระบบ
+        async function logout() {
+            const token = localStorage.getItem('access_token');
+    
+            try {
+                await fetch('/logout', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+    
+                localStorage.removeItem('access_token'); // ลบ Token ออกจาก localStorage
+                window.location.reload(); // รีเฟรชหน้าเว็บ
+            } catch (error) {
+                console.error("เกิดข้อผิดพลาดขณะออกจากระบบ:", error);
+            }
+        }
+    
+        // ✅ ฟังก์ชันโหลดโพสต์ตามหมวดหมู่
+        async function fetchPostsByCategory(category = '') {
+            try {
+                let url = category ? `/get_posts_by_category?category=${category}` : `/get_posts`; 
+                const response = await fetch(url);
+                const posts = await response.json();
+                
+                const postContainer = document.getElementById("postContainer");
+                postContainer.innerHTML = ""; // ล้างข้อมูลเก่าก่อนแสดงใหม่
+                
+                if (posts.error || posts.message) {
+                    postContainer.innerHTML = `<p>${posts.message || posts.error}</p>`;
+                    return;
+                }
+    
+                posts.forEach(post => {
+                    const postDiv = document.createElement("div");
+                    postDiv.classList.add("post");
+                    
+                    // ✅ เมื่อกดที่โพสต์ เช็คว่าผู้ใช้ล็อกอินหรือไม่
+                    postDiv.onclick = function() {
+                        if (!isLoggedIn) {
+                            window.location.href = "/login_page";
+                        } else {
+                            window.location.href = `/post/${post._id}`;
+                        }
+                    };
+    
+                    postDiv.innerHTML = `
+                        <div class="post-header">
+                            <img class="profile-pic" src="https://via.placeholder.com/40" alt="Profile">
+                            <div class="post-user-info">
+                                <span class="username">${post.title}</span>
+                                <span class="post-time">${post.category}</span>
+                            </div>
+                        </div>
+                        ${post.image_url ? `<img class="post-image" src="${post.image_url}" alt="Post Image">` : ""}
+                        <div class="post-content">
+                            <h3>${post.category}</h3>
+                            <p>${post.content}</p>
+                        </div>
+                    `;
+    
+                    postContainer.appendChild(postDiv);
+                });
+            } catch (error) {
+                console.error("เกิดข้อผิดพลาดในการดึงข้อมูล:", error);
+            }
+        }
+    
+        // ✅ โหลดข้อมูลผู้ใช้และโพสต์เมื่อเปิดหน้าเว็บ
+        document.addEventListener("DOMContentLoaded", async function() {
+            await loadUserProfile();
+            fetchPostsByCategory('');
+        });
+    </script>
+    
+    
+    
+    
+
 
 </body>
 </html>
